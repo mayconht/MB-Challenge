@@ -27,6 +27,14 @@
             <version>1.10.0-milestone-4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>
