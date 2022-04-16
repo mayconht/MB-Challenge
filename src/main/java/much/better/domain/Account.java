@@ -2,8 +2,8 @@ package much.better.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import java.util.List;
+import java.util.Objects;
 
 
 public class Account implements Serializable {
@@ -26,7 +26,7 @@ public class Account implements Serializable {
     }
 
     public List<Transactions> getTransactions() {
-        return transactions;
+        return this.transactions;
     }
 
     public void setTransactions(final List<Transactions> transactions) {
@@ -34,7 +34,7 @@ public class Account implements Serializable {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(final String id) {
@@ -42,7 +42,7 @@ public class Account implements Serializable {
     }
 
     public double getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public void setAmount(final double amount) {
@@ -50,11 +50,27 @@ public class Account implements Serializable {
     }
 
     public String getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     public void setCurrency(final String currency) {
         this.currency = currency;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Account)) {
+            return false;
+        }
+        final Account account = (Account) o;
+        return Double.compare(account.amount, this.amount) == 0 && Objects.equals(this.id, account.id) && Objects.equals(this.currency, account.currency) && Objects.equals(this.transactions, account.transactions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.amount, this.currency, this.transactions);
+    }
 }

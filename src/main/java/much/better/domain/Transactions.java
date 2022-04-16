@@ -31,11 +31,11 @@ public class Transactions implements Serializable {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public Date getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     public void setTimestamp(final Date timestamp) {
@@ -43,7 +43,7 @@ public class Transactions implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(final String description) {
@@ -51,7 +51,7 @@ public class Transactions implements Serializable {
     }
 
     public double getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public void setAmount(final double amount) {
@@ -59,12 +59,27 @@ public class Transactions implements Serializable {
     }
 
     public String getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     public void setCurrency(final String currency) {
         this.currency = currency;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Transactions)) {
+            return false;
+        }
+        final Transactions that = (Transactions) o;
+        return Double.compare(that.amount, this.amount) == 0 && Objects.equals(this.id, that.id) && Objects.equals(this.timestamp, that.timestamp) && Objects.equals(this.description, that.description) && Objects.equals(this.currency, that.currency);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.timestamp, this.description, this.amount, this.currency);
+    }
 }
