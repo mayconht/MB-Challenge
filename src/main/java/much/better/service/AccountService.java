@@ -17,7 +17,6 @@ public class AccountService {
     private RedisService redisService;
     final ObjectMapper mapper = new ObjectMapper();
 
-
     public Account createAccount() { // TODO
         Account account = null;
         try {
@@ -26,7 +25,7 @@ public class AccountService {
             account.getTransactions().add(transactions);
             this.redisService.jedisService().set(account.getId(), this.mapper.writeValueAsString(account));
         } catch (final JsonProcessingException ex) {
-            System.out.println("Error Handling Json"); // TODO
+            System.err.println("Error Handling Json"); // TODO
         }
         return account;
     }
