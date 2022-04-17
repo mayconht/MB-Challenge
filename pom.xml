@@ -14,27 +14,21 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/io.ratpack/ratpack-core -->
         <dependency>
             <groupId>io.ratpack</groupId>
             <artifactId>ratpack-core</artifactId>
             <version>1.10.0-milestone-4</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.ratpack/ratpack-guice -->
         <dependency>
             <groupId>io.ratpack</groupId>
             <artifactId>ratpack-guice</artifactId>
             <version>1.10.0-milestone-4</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>4.2.2</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
@@ -45,8 +39,16 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version>
+        </dependency>
     </dependencies>
 
 </project>

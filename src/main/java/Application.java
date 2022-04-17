@@ -1,5 +1,6 @@
 import much.better.endpoints.ApiEndpoints;
 import much.better.endpoints.ApiModule;
+import much.better.errorHandlers.ErrorModule;
 import much.better.service.ServiceModule;
 import ratpack.guice.Guice;
 import ratpack.server.RatpackServer;
@@ -11,7 +12,7 @@ public class Application {
         RatpackServer.start(server -> server
                 .serverConfig(getServerConfig())
                 .registry(Guice.registry(m -> m
-//                        .module(ErrorModule.class)
+                        .module(ErrorModule.class)
                         .module(ApiModule.class)
                         .module(ServiceModule.class)))
                 .handlers(handler -> handler
@@ -23,7 +24,6 @@ public class Application {
                 .port(8080) //TODO Add it to Environment Variables
                 .development(true)//TODO Add it to Environment Variables
                 .connectTimeoutMillis(10000)
-                .threads(8)
         );
         return serverConfig;
     }

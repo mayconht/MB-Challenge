@@ -1,4 +1,4 @@
-package much.better.handlers;
+package much.better.Handlers;
 
 import com.google.inject.Inject;
 import much.better.service.AccountService;
@@ -20,9 +20,13 @@ public class AccountHandler implements Handler {
 
     @Override
     public void handle(final Context context) throws Exception {
+        String bearer = "";
+        String id = "";
 
-        final String bearer = context.getRequest().getHeaders().get("Authorization").isEmpty() ? "" : context.getRequest().getHeaders().get("Authorization").replace("Bearer", "").trim();
-        final String id = bearer.isEmpty() ? "" : this.jwtService.getClaimFromToken(bearer, "UUID");
+        if (context.getRequest().getHeaders().getNames().contains("Authorization")) {
+            bearer = context.getRequest().getHeaders().get("Authorization").isEmpty() ? "" : context.getRequest().getHeaders().get("Authorization").replace("Bearer", "").trim();
+            id = bearer.isEmpty() ? "" : this.jwtService.getClaimFromToken(bearer, "UUID");
+        }
 
 
         switch (context.getRequest().getPath().toLowerCase()) {
@@ -31,44 +35,22 @@ public class AccountHandler implements Handler {
                 token.put("token", this.jwtService.generateJWTToken(this.accountService.createAccount().getId()));
                 context.render(Jackson.json(token));
                 break;
-
             case "balance":
-                if (!bearer.isEmpty()) {
-                    if (!this.jwtService.verifyJWTToken(bearer)) {
-                        System.out.println("Invalid Token: " + bearer);//TODO error
-                    }
-                    context.render(Jackson.json(this.accountService.getAccountBalance(id)));
-
-                } else {
-                    System.out.println("Invalid Token: " + bearer); //TODO error
-                }
+                context.render(Jackson.json(this.accountService.getAccountBalance(id)));
                 break;
             case "transactions":
-                if (!bearer.isEmpty()) {
-                    if (!this.jwtService.verifyJWTToken(bearer)) {
-                        System.out.println("Invalid Token: " + bearer);//TODO error
-                    }
-                    context.render(Jackson.json(this.accountService.getAccountTransactions(id)));
-                } else {
-                    System.out.println("Invalid Token: " + bearer); //TODO error
-                }
+                context.render(Jackson.json(this.accountService.getAccountTransactions(id)));
                 break;
             case "spend":
-                if (!bearer.isEmpty()) {
-                    if (!this.jwtService.verifyJWTToken(bearer)) {
-                        System.out.println("Invalid Token: " + bearer);//TODO error
+
+                final String finalId = id;
+                context.getRequest().getBody().then(bd -> {
+                    if (this.accountService.insertNewTransaction(finalId, bd.getText())) {
+                        context.render("ok");
+                    } else {
+                        context.clientError(400);
                     }
-
-                    context.getRequest().getBody().then(bd -> {
-                        if (this.accountService.insertNewTransaction(id, bd.getText())) {
-                            context.render("ok");
-                        } else {
-                            context.clientError(400);
-                        }
-                    });
-
-
-                }
+                });
                 break;
             default:
                 System.out.println("NONE");

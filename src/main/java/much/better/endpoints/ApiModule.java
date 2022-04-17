@@ -1,7 +1,7 @@
 package much.better.endpoints;
 
 import com.google.inject.AbstractModule;
-import much.better.handlers.AccountHandler;
+import much.better.Handlers.AccountHandler;
 
 public class ApiModule extends AbstractModule {
     @Override

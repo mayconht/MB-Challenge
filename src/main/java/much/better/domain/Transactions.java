@@ -25,7 +25,6 @@ public class Transactions implements Serializable {
         this.description = description;
         this.amount = amount;
         this.currency = currency;
-
     }
 
     public void setId(final String id) {
