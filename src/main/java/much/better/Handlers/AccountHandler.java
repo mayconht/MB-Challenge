@@ -1,6 +1,7 @@
 package much.better.Handlers;
 
 import com.google.inject.Inject;
+import much.better.errorHandlers.errors.NoSuchAccountException;
 import much.better.service.AccountService;
 import much.better.service.JwtService;
 import ratpack.handling.Context;
@@ -26,6 +27,10 @@ public class AccountHandler implements Handler {
         if (context.getRequest().getHeaders().getNames().contains("Authorization")) {
             bearer = context.getRequest().getHeaders().get("Authorization").isEmpty() ? "" : context.getRequest().getHeaders().get("Authorization").replace("Bearer", "").trim();
             id = bearer.isEmpty() ? "" : this.jwtService.getClaimFromToken(bearer, "UUID");
+        } else {
+            if (context.getRequest().getPath() != "login") {
+                throw new NoSuchAccountException();
+            }
         }
 
 
@@ -53,8 +58,7 @@ public class AccountHandler implements Handler {
                 });
                 break;
             default:
-                System.out.println("NONE");
-                // TODO Should Return Bad Request
+
         }
     }
 }

@@ -1,6 +1,6 @@
 package much.better.errorHandlers.errors;
 
-public abstract class BaseException extends RuntimeException {
+public class BaseException extends RuntimeException {
     private int status = 500;
     private String errorCode;
     private String errorMessage = "An error occurred. Please contact support.";
@@ -8,7 +8,6 @@ public abstract class BaseException extends RuntimeException {
     private String errorDetailUrl;
 
     public BaseException() {
-        // Noop
     }
 
     public BaseException(final int status, final String errorMessage) {

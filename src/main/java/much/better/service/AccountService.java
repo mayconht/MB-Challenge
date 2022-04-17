@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import much.better.domain.Account;
 import much.better.domain.Transactions;
+import much.better.errorHandlers.errors.BaseException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -23,7 +24,7 @@ public class AccountService {
     final ObjectMapper mapper = new ObjectMapper();
 
 
-    public Account createAccount() { // TODO
+    public Account createAccount() {
         Account account = null;
         try {
             account = new Account(UUID.randomUUID().toString(), 5000.00, "USD");
@@ -31,7 +32,7 @@ public class AccountService {
             account.getTransactions().add(transactions);
             this.redisService.jedisService().set(account.getId(), this.mapper.writeValueAsString(account));
         } catch (final JsonProcessingException ex) {
-            System.err.println("Error Handling Json"); // TODO
+            throw new BaseException(500, "Internal Server Error");
         }
         return account;
     }
@@ -87,7 +88,6 @@ public class AccountService {
         } catch (final JsonProcessingException e) {
             e.printStackTrace();
         }
-        System.out.println(account);
         return true;
     }
 
