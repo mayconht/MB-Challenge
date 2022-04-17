@@ -21,8 +21,9 @@ public class AccountHandler implements Handler {
     @Override
     public void handle(final Context context) throws Exception {
 
-        final String bearer = context.getRequest().getHeaders().get("Authorization").replace("Bearer", "").trim();
-        final String id = this.jwtService.getClaimFromToken(bearer, "UUID");
+        final String bearer = context.getRequest().getHeaders().get("Authorization").isEmpty() ? "" : context.getRequest().getHeaders().get("Authorization").replace("Bearer", "").trim();
+        final String id = bearer.isEmpty() ? "" : this.jwtService.getClaimFromToken(bearer, "UUID");
+
 
         switch (context.getRequest().getPath().toLowerCase()) {
             case "login":
@@ -41,7 +42,6 @@ public class AccountHandler implements Handler {
                 } else {
                     System.out.println("Invalid Token: " + bearer); //TODO error
                 }
-
                 break;
             case "transactions":
                 if (!bearer.isEmpty()) {
@@ -54,7 +54,21 @@ public class AccountHandler implements Handler {
                 }
                 break;
             case "spend":
-                System.out.println("SPEND");
+                if (!bearer.isEmpty()) {
+                    if (!this.jwtService.verifyJWTToken(bearer)) {
+                        System.out.println("Invalid Token: " + bearer);//TODO error
+                    }
+
+                    context.getRequest().getBody().then(bd -> {
+                        if (this.accountService.insertNewTransaction(id, bd.getText())) {
+                            context.render("ok");
+                        } else {
+                            context.clientError(400);
+                        }
+                    });
+
+
+                }
                 break;
             default:
                 System.out.println("NONE");
