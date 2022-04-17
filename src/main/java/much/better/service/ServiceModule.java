@@ -7,5 +7,6 @@ public class ServiceModule extends AbstractModule {
     protected void configure() {
         bind(AccountService.class);
         bind(RedisService.class);
+        bind(JwtService.class);
     }
 }
