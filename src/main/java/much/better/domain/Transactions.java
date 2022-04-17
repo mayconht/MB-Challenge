@@ -1,5 +1,7 @@
 package much.better.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -81,5 +83,16 @@ public class Transactions implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(this.id, this.timestamp, this.description, this.amount, this.currency);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", this.id)
+                .append("timestamp", this.timestamp)
+                .append("description", this.description)
+                .append("amount", this.amount)
+                .append("currency", this.currency)
+                .toString();
     }
 }

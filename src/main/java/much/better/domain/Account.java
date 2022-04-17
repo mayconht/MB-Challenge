@@ -73,4 +73,14 @@ public class Account implements Serializable {
     public int hashCode() {
         return Objects.hash(this.id, this.amount, this.currency, this.transactions);
     }
+
+    @Override
+    public String toString() {
+        return new org.apache.commons.lang3.builder.ToStringBuilder(this)
+                .append("id", this.id)
+                .append("amount", this.amount)
+                .append("currency", this.currency)
+                .append("transactions", this.transactions)
+                .toString();
+    }
 }
