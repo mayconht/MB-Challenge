@@ -9,6 +9,7 @@ import com.google.inject.Singleton;
 import much.better.domain.Account;
 import much.better.domain.Transactions;
 import much.better.errorHandlers.errors.BaseException;
+import much.better.errorHandlers.errors.NoSuchAccountException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -61,11 +62,14 @@ public class AccountService {
         return null;
     }
 
-    public boolean insertNewTransaction(final String id, final String body) throws ParseException {
+    public boolean insertNewTransaction(final String id, final String body) throws ParseException, JsonProcessingException {
         final JSONObject jbody = new JSONObject(body);
         final Account account = getAccountById(id);
 
         if (!jbody.getString("currency").equals(account.getCurrency())) {
+            return false;
+        }
+        if (account.getAmount() - jbody.getDouble("amount") < 0) {
             return false;
         }
 
@@ -76,18 +80,12 @@ public class AccountService {
                 jbody.getDouble("amount"),
                 jbody.getString("currency"));
 
-
-        if (account.getAmount() - jbody.getDouble("amount") < 0) {
-            return false;
-        }
         account.setAmount(account.getAmount() - jbody.getDouble("amount"));
         account.getTransactions().add(transactions);
 
-        try {
-            this.redisService.jedisService().set(account.getId(), this.mapper.writeValueAsString(account));
-        } catch (final JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
+        this.redisService.jedisService().set(account.getId(), this.mapper.writeValueAsString(account));
+
         return true;
     }
 
@@ -95,8 +93,8 @@ public class AccountService {
         Account account = null;
         try {
             account = this.mapper.readValue(this.redisService.jedisService().get(id), Account.class);
-        } catch (final JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (final Exception e) {
+            throw new NoSuchAccountException();
         }
         return account;
     }

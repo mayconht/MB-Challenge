@@ -1,6 +1,7 @@
 package much.better.Handlers;
 
 import com.google.inject.Inject;
+import much.better.errorHandlers.errors.BaseException;
 import much.better.errorHandlers.errors.NoSuchAccountException;
 import much.better.service.AccountService;
 import much.better.service.JwtService;
@@ -53,7 +54,7 @@ public class AccountHandler implements Handler {
                     if (this.accountService.insertNewTransaction(finalId, bd.getText())) {
                         context.render("ok");
                     } else {
-                        context.clientError(400);
+                        throw new BaseException(500, "No funds for account or wrong currency");
                     }
                 });
                 break;
