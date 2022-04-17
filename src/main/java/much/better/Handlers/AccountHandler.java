@@ -52,7 +52,7 @@ public class AccountHandler implements Handler {
                 final String finalId = id;
                 context.getRequest().getBody().then(bd -> {
                     if (this.accountService.insertNewTransaction(finalId, bd.getText())) {
-                        context.render("ok");
+                        context.getResponse().status(201).send();
                     } else {
                         throw new BaseException(500, "No funds for account or wrong currency");
                     }
