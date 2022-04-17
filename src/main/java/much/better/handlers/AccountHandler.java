@@ -41,15 +41,16 @@ public class AccountHandler implements Handler {
                 } else {
                     System.out.println("Invalid Token: " + bearer); //TODO error
                 }
-                
+
                 break;
             case "transactions":
                 if (!bearer.isEmpty()) {
                     if (!this.jwtService.verifyJWTToken(bearer)) {
                         System.out.println("Invalid Token: " + bearer);//TODO error
                     }
-
-
+                    context.render(Jackson.json(this.accountService.getAccountTransactions(id)));
+                } else {
+                    System.out.println("Invalid Token: " + bearer); //TODO error
                 }
                 break;
             case "spend":

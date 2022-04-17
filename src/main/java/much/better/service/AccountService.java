@@ -2,6 +2,7 @@ package much.better.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -46,7 +47,19 @@ public class AccountService {
         return null;
     }
 
-    public ObjectNode getAccountHistory(final String id) {
+    public ObjectNode getAccountTransactions(final String id) {
+        final ObjectNode json = this.mapper.createObjectNode();
+
+        try {
+            final Account account = this.mapper.readValue(this.redisService.jedisService().get(id), Account.class);
+            final ArrayNode arraynode = json.putArray("transactions");
+            json.put("id", account.getId());
+            account.getTransactions().forEach(arraynode::addPOJO);
+            return json;
+        } catch (final JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
