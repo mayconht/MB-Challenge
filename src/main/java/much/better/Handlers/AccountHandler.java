@@ -28,7 +28,7 @@ public class AccountHandler implements Handler {
             bearer = context.getRequest().getHeaders().get("Authorization").isEmpty() ? "" : context.getRequest().getHeaders().get("Authorization").replace("Bearer", "").trim();
             id = bearer.isEmpty() ? "" : this.jwtService.getClaimFromToken(bearer, "UUID");
         } else {
-            if (context.getRequest().getPath() != "login") {
+            if (!context.getRequest().getPath().equals("login")) {
                 throw new NoSuchAccountException();
             }
         }
