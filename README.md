@@ -11,7 +11,7 @@
 ## :pencil: Approach (Dev Review)
 The project's main idea is to create a microservice for account management. 4 endpoints were provided - login, Spend, Balance, and Transactions - with 2 POST requests and 2 GET requests, respectively. When calling a non-listed endpoint, you should receive a 404 error for page not found or 405 method not allowed.
 
-Unfortunately, this project is not using Java Currency or Java Money. Therefore, I assumed Double variables as the main currency manipulator, even knowing its implications when rounding currency.
+Unfortunately, this project is not using Java Currency or Java Money. Therefore, I assumed BigDecimal variables as the main currency manipulator, even knowing its implications when rounding currency (but is still better than Double :D ).
 
 There is not much information other than RatPack's official page. It was quite a challenge to develop using this framework. But it was pretty fun trying something different than SpringBoot.
 
