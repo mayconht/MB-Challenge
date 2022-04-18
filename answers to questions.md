@@ -25,7 +25,7 @@
    "location":"Brazil",
    "class":"healer",
    "pet":"cat",
-   "like_to_do":"Play with cats and play guitar sometimes, also be with family and play some video games",
+   "like_to_do":"Play with cats and play guitar sometimes, also be with family and play some video games. Ride my bike or motorcycle around the city.",
    "fear":"snakes",
    "mission":"heal the world a bit every day",
    "food":"fried chicken wings",
