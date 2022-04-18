@@ -12,7 +12,7 @@ import java.util.Date;
 @Singleton
 public class JwtService {
     private final long DEFAULT_EXPIRE_IN_SECONDS = 2400;
-    private final String SECRET = "DtNwYvaSgsvWVvMcmHFXOaSs7zsd93Vyw0JhvHxYgXm0zOdhBK06cC93QZN2L1tZoUYz0X8BMymwuLGA8c6plLpurJE";
+    private final String SECRET = System.getenv("JWT_SECRET");
 
     private final Algorithm algorithm = Algorithm.HMAC256(this.SECRET);
 
@@ -20,7 +20,7 @@ public class JwtService {
         final Date expireDate = new Date(new Date().getTime() + (this.DEFAULT_EXPIRE_IN_SECONDS * 1000));
 
         final String jwtToken = JWT.create()
-                .withIssuer("Much Better")
+                .withIssuer(System.getenv("JWT_ISSUER"))
                 .withClaim("UUID", id)
                 .withExpiresAt(expireDate)
                 .sign(this.algorithm);
@@ -31,7 +31,7 @@ public class JwtService {
     public boolean verifyJWTToken(final String token) {
         try {
             final JWTVerifier verifier = JWT.require(this.algorithm)
-                    .withIssuer("Much Better")
+                    .withIssuer(System.getenv("JWT_ISSUER"))
                     .acceptExpiresAt(this.DEFAULT_EXPIRE_IN_SECONDS)
                     .build();
             verifier.verify(token);

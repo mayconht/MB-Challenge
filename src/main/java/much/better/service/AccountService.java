@@ -28,12 +28,12 @@ public class AccountService {
     public Account createAccount() {
         Account account = null;
         try {
-            account = new Account(UUID.randomUUID().toString(), 5000.00, "USD");
-            final Transactions transactions = new Transactions(UUID.randomUUID().toString(), new Date(), "Account Creation", 5000.00, "USD");
+            account = new Account(UUID.randomUUID().toString(), Double.parseDouble(System.getenv("ACCOUNT_INITIAL_AMOUNT")), System.getenv("ACCOUNT_CURRENCY"));
+            final Transactions transactions = new Transactions(UUID.randomUUID().toString(), new Date(), "Account Creation", Double.parseDouble(System.getenv("ACCOUNT_INITIAL_AMOUNT")), System.getenv("ACCOUNT_CURRENCY"));
             account.getTransactions().add(transactions);
             this.redisService.jedisService().set(account.getId(), this.mapper.writeValueAsString(account));
         } catch (final JsonProcessingException ex) {
-            throw new BaseException(500, "Internal Server Error");
+            throw new BaseException(500, "Internal Server Error", ex.getMessage());
         }
         return account;
     }

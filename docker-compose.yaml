@@ -1,0 +1,28 @@
+version: '3'
+
+volumes:
+  redis_data_volume: {}
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    expose:
+      - 6379
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_volume:/data
+    restart: always
+
+  muchbetter:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: accountService
+    env_file: .env
+    depends_on:
+      - redis
+    restart: always
+    ports:
+      - "8080:8080"

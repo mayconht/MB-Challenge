@@ -21,8 +21,8 @@ public class Application {
 
     private static ServerConfig getServerConfig() throws Exception {
         final ratpack.server.ServerConfig serverConfig = ratpack.server.ServerConfig.of(config -> config
-                .port(8080)
-                .development(false)
+                .port(Integer.parseInt(System.getenv("RATPACK_PORT")))
+                .development(Boolean.parseBoolean(System.getenv("RATPACK_DEV")))
                 .connectTimeoutMillis(10000)
         );
         return serverConfig;
