@@ -8,6 +8,9 @@
 
 >**The endPoint references tests are on the challenge page provided by the MuchBetter team and can be imported to Postman. The system is using REDIS** >**Memory DB. In addition, there is a persistence layer in this project provided on the Docker-compose file.**
 
+>**Pay attention that the currency used is USD, you can change it on .env file. if you try to use wrong currency on system it will return an error**
+
+
 ## :pencil: Approach (Dev Review)
 The project's main idea is to create a microservice for account management. 4 endpoints were provided - login, Spend, Balance, and Transactions - with 2 POST requests and 2 GET requests, respectively. When calling a non-listed endpoint, you should receive a 404 error for page not found or 405 method not allowed.
 
