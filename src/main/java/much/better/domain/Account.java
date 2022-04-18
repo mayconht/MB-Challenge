@@ -1,6 +1,7 @@
 package much.better.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,7 @@ public class Account implements Serializable {
 
 
     private String id;
-    private double amount;
+    private BigDecimal amount;
     private String currency;
 
     List<Transactions> transactions = new ArrayList<>();
@@ -19,7 +20,7 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public Account(final String id, final double amount, final String currency) {
+    public Account(final String id, final BigDecimal amount, final String currency) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -41,11 +42,11 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return this.amount;
     }
 
-    public void setAmount(final double amount) {
+    public void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -57,21 +58,18 @@ public class Account implements Serializable {
         this.currency = currency;
     }
 
+
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Account)) {
-            return false;
-        }
-        final Account account = (Account) o;
-        return Double.compare(account.amount, this.amount) == 0 && Objects.equals(this.id, account.id) && Objects.equals(this.currency, account.currency) && Objects.equals(this.transactions, account.transactions);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        Account account = (Account) o;
+        return Objects.equals(id, account.id) && Objects.equals(amount, account.amount) && Objects.equals(currency, account.currency) && Objects.equals(transactions, account.transactions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.amount, this.currency, this.transactions);
+        return Objects.hash(id, amount, currency, transactions);
     }
 
     @Override

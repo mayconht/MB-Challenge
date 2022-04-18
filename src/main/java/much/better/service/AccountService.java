@@ -12,6 +12,7 @@ import much.better.errorHandlers.errors.BaseException;
 import much.better.errorHandlers.errors.NoSuchAccountException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,8 +29,8 @@ public class AccountService {
     public Account createAccount() {
         Account account = null;
         try {
-            account = new Account(UUID.randomUUID().toString(), Double.parseDouble(System.getenv("ACCOUNT_INITIAL_AMOUNT")), System.getenv("ACCOUNT_CURRENCY"));
-            final Transactions transactions = new Transactions(UUID.randomUUID().toString(), new Date(), "Account Creation", Double.parseDouble(System.getenv("ACCOUNT_INITIAL_AMOUNT")), System.getenv("ACCOUNT_CURRENCY"));
+            account = new Account(UUID.randomUUID().toString(), new BigDecimal(System.getenv("ACCOUNT_INITIAL_AMOUNT")), System.getenv("ACCOUNT_CURRENCY"));
+            final Transactions transactions = new Transactions(UUID.randomUUID().toString(), new Date(), "Account Creation",new BigDecimal( System.getenv("ACCOUNT_INITIAL_AMOUNT")), System.getenv("ACCOUNT_CURRENCY"));
             account.getTransactions().add(transactions);
             this.redisService.jedisService().set(account.getId(), this.mapper.writeValueAsString(account));
         } catch (final JsonProcessingException ex) {
@@ -69,7 +70,7 @@ public class AccountService {
         if (!jbody.getString("currency").equals(account.getCurrency())) {
             return false;
         }
-        if (account.getAmount() - jbody.getDouble("amount") < 0) {
+        if (account.getAmount().compareTo(new BigDecimal(jbody.getString("amount"))) < 0) {
             return false;
         }
 
@@ -77,10 +78,10 @@ public class AccountService {
                 UUID.randomUUID().toString(),
                 dateConverter(jbody.getString("date")),
                 jbody.getString("description"),
-                jbody.getDouble("amount"),
+                new BigDecimal(jbody.getString("amount")),
                 jbody.getString("currency"));
 
-        account.setAmount(account.getAmount() - jbody.getDouble("amount"));
+        account.setAmount(account.getAmount().subtract(new BigDecimal(jbody.getString("amount"))));
         account.getTransactions().add(transactions);
 
 

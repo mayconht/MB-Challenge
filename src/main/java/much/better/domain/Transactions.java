@@ -3,6 +3,7 @@ package much.better.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,13 +14,13 @@ public class Transactions implements Serializable {
     private String id;
     private Date timestamp;
     private String description;
-    private double amount;
+    private BigDecimal amount;
     private String currency;
 
     public Transactions() {
     }
 
-    public Transactions(final String id, final Date timestamp, final String description, final double amount, final String currency) {
+    public Transactions(final String id, final Date timestamp, final String description, final BigDecimal amount, final String currency) {
         this.id = id;
         this.timestamp = timestamp;
         this.description = description;
@@ -51,11 +52,11 @@ public class Transactions implements Serializable {
         this.description = description;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return this.amount;
     }
 
-    public void setAmount(final double amount) {
+    public void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -68,15 +69,11 @@ public class Transactions implements Serializable {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Transactions)) {
-            return false;
-        }
-        final Transactions that = (Transactions) o;
-        return Double.compare(that.amount, this.amount) == 0 && Objects.equals(this.id, that.id) && Objects.equals(this.timestamp, that.timestamp) && Objects.equals(this.description, that.description) && Objects.equals(this.currency, that.currency);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Transactions)) return false;
+        Transactions that = (Transactions) o;
+        return Objects.equals(id, that.id) && Objects.equals(timestamp, that.timestamp) && Objects.equals(description, that.description) && Objects.equals(amount, that.amount) && Objects.equals(currency, that.currency);
     }
 
     @Override
